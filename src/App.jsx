@@ -1,24 +1,16 @@
+import { useState } from 'react';
 import pokedexData from './data/pokedex-data.json';
+import PokemonCard from './components/PokemonCard.jsx';
 import './App.css';
 
 export default function App() {
-  // Ajuste a chave conforme o JSON ('pokemon', 'pokemons' ou se for um array direto)
-  const pokemons = pokedexData.pokemon || pokedexData.pokemons || pokedexData;
-  const trainers = pokedexData.trainers || pokedexData.treinadores || [];
-
+  const [favorites, setFavorites] = useState(new Set());
+  const toggle = (id) => setFavorites((prev) => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
   return (
-    <div style={{ padding: '24px' }}>
-      <h1>Pokédex Interativa</h1>
-      <p>Total de Pokémon carregados: <strong>{pokemons.length}</strong></p>
-      <p>Total de Treinadores: <strong>{trainers.length}</strong></p>
-
-      <ul>
-        {pokemons.slice(0, 5).map((p) => (
-          <li key={p.id}>
-            #{p.id} - {p.name}
-          </li>
-        ))}
-      </ul>
+    <div className="pokemon-grid" style={{ padding: 24 }}>
+      {[...pokedexData.pokemon, { id: 99999, name: 'missingno', stats: { hp: 1, attack: 1, defense: 1 }, types: [] }].map((p) => (
+        <PokemonCard key={p.id} pokemon={p} onSelect={(x) => console.log('[card] select', x.name)} isFavorite={favorites.has(p.id)} onToggleFavorite={toggle} />
+      ))}
     </div>
   );
 }
