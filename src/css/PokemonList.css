@@ -1,0 +1,22 @@
+/* A classe .pokemon-grid está definida em PokemonCard.css */
+
+.pokemon-list__empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  padding: 4rem 1rem;
+  border: 1px dashed #334155;
+  border-radius: 1.25rem;
+  text-align: center;
+}
+
+.pokemon-list__empty-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.pokemon-list__empty-text {
+  margin: 0;
+  color: #94a3b8;
+}
