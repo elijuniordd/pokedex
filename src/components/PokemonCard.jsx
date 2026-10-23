@@ -3,6 +3,16 @@ import StarIcon from './StarIcon.jsx';
 import { FALLBACK_SRC, capitalize, formatId, getArtworkUrl, getStats, getTypes } from '../utils/pokemon.js';
 import '../css/PokemonCard.css';
 
+// [chave em pokemon.stats, rótulo curto para caber no card, classe de cor]
+const CARD_STATS = [
+  ['hp', 'HP', 'hp'],
+  ['attack', 'Ataque', 'attack'],
+  ['defense', 'Defesa', 'defense'],
+  ['specialAttack', 'Atq. Esp.', 'special-attack'],
+  ['specialDefense', 'Def. Esp.', 'special-defense'],
+  ['speed', 'Veloc.', 'speed'],
+];
+
 function PokemonCard({ pokemon, onSelect, isFavorite = false, onToggleFavorite }) {
   // Guarda o id cuja imagem falhou: ao mudar de Pokémon a imagem volta a ser tentada
   const [failedImageId, setFailedImageId] = useState(null);
@@ -10,7 +20,7 @@ function PokemonCard({ pokemon, onSelect, isFavorite = false, onToggleFavorite }
   const { id } = pokemon;
   const name = capitalize(pokemon.name);
   const types = getTypes(pokemon);
-  const { hp, attack, defense } = getStats(pokemon);
+  const stats = getStats(pokemon);
   const primaryType = types[0] ?? 'normal';
   const imageSrc = failedImageId === id ? FALLBACK_SRC : getArtworkUrl(id);
 
@@ -78,18 +88,12 @@ function PokemonCard({ pokemon, onSelect, isFavorite = false, onToggleFavorite }
       </ul>
 
       <dl className="pokemon-card__stats">
-        <div className="pokemon-card__stat pokemon-card__stat--hp">
-          <dt>HP</dt>
-          <dd>{hp}</dd>
-        </div>
-        <div className="pokemon-card__stat pokemon-card__stat--attack">
-          <dt>Ataque</dt>
-          <dd>{attack}</dd>
-        </div>
-        <div className="pokemon-card__stat pokemon-card__stat--defense">
-          <dt>Defesa</dt>
-          <dd>{defense}</dd>
-        </div>
+        {CARD_STATS.map(([key, label, modifier]) => (
+          <div key={key} className={`pokemon-card__stat pokemon-card__stat--${modifier}`}>
+            <dt>{label}</dt>
+            <dd>{stats[key]}</dd>
+          </div>
+        ))}
       </dl>
     </article>
   );
