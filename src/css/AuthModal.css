@@ -1,0 +1,142 @@
+.auth-modal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgb(2 6 23 / 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.auth-modal {
+  position: relative;
+  width: min(400px, 100%);
+  padding: 1.75rem;
+  border: 1px solid #334155;
+  border-radius: 1.25rem;
+  background: #1e293b;
+  color: #f8fafc;
+  box-shadow: 0 24px 60px -12px rgb(0 0 0 / 0.7);
+}
+
+.auth-modal__close {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.auth-modal__close:hover {
+  color: #f8fafc;
+}
+
+.auth-modal__close:focus-visible,
+.auth-modal__switch button:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.auth-modal__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+}
+
+.auth-modal__message {
+  margin: 0 0 0.5rem;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.auth-modal__form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.auth-modal__field {
+  display: grid;
+  gap: 0.35rem;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.auth-modal__field input {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  background: #0f172a;
+  color: #f8fafc;
+  font: inherit;
+}
+
+.auth-modal__field input:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgb(96 165 250 / 0.25);
+}
+
+.auth-modal__feedback {
+  margin: 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.auth-modal__feedback--error {
+  background: rgb(248 113 113 / 0.15);
+  color: #fca5a5;
+}
+
+.auth-modal__feedback--info {
+  background: rgb(74 222 128 / 0.15);
+  color: #86efac;
+}
+
+.auth-modal__submit {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 999px;
+  background: #60a5fa;
+  color: #0f172a;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.auth-modal__submit:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.auth-modal__submit:focus-visible {
+  outline: 2px solid #f8fafc;
+  outline-offset: 2px;
+}
+
+.auth-modal__switch {
+  margin: 1.25rem 0 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.auth-modal__switch button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #60a5fa;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}

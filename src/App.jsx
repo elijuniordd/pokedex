@@ -5,6 +5,12 @@ import TypeFilter from './components/TypeFilter.jsx';
 import PokemonList from './components/PokemonList.jsx';
 import TrainerList from './components/TrainerList.jsx';
 import PokemonDetails from './components/PokemonDetails.jsx';
+import AuthModal from './components/AuthModal.jsx';
+import UserMenu from './components/UserMenu.jsx';
+import useAuth from './hooks/useAuth.js';
+import useFavorites from './hooks/useFavorites.js';
+import { isSupabaseConfigured } from './lib/supabase.js';
+import { signOut } from './services/auth.js';
 import './css/App.css';
 
 const pokemons = pokedexData.pokemon;
@@ -22,20 +28,39 @@ const matchesSearch = (pokemon, search) => {
 };
 
 export default function App() {
-  const [favorites, setFavorites] = useState(() => new Set());
   const [search, setSearch] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [view, setView] = useState('pokemon');
+  const [authMessage, setAuthMessage] = useState(null); // string = modal de login aberto
+  const [notice, setNotice] = useState('');
 
-  const toggleFavorite = (id) => {
-    setFavorites((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+  const { user } = useAuth();
+  const { favorites, toggleFavorite, error: favoritesError, clearError } = useFavorites(user);
+
+  const openLogin = (message = '') => setAuthMessage(message);
+
+  const handleToggleFavorite = (id) => {
+    if (!isSupabaseConfigured) {
+      setNotice('Favoritos indisponíveis: o Supabase não está configurado neste projeto.');
+    } else if (!user) {
+      openLogin('Entre na sua conta para guardar os seus favoritos.');
+    } else {
+      toggleFavorite(id);
+    }
   };
+
+  const handleSignOut = () => {
+    signOut().catch(() => setNotice('Não foi possível sair. Tente novamente.'));
+  };
+
+  const dismissNotice = () => {
+    setNotice('');
+    clearError();
+  };
+
+  const visibleNotice = notice || favoritesError;
+  const favoritePokemons = pokemons.filter((pokemon) => favorites.has(pokemon.id));
 
   const filteredPokemons = pokemons.filter(
     (pokemon) =>
@@ -46,14 +71,28 @@ export default function App() {
   return (
     <div className="app">
       <header className="app__header">
-        <h1 className="app__title">Pokédex</h1>
-        <p className="app__subtitle">
-          {view === 'pokemon'
-            ? `${filteredPokemons.length} de ${pokemons.length} Pokémon`
-            : `${trainers.length} treinadores`}{' '}
-          · {favorites.size} favoritos
-        </p>
+        <div>
+          <h1 className="app__title">Pokédex</h1>
+          <p className="app__subtitle">
+            {view === 'trainers'
+              ? `${trainers.length} treinadores`
+              : `${view === 'pokemon' ? `${filteredPokemons.length} de ${pokemons.length} Pokémon` : `${pokemons.length} Pokémon`}`}{' '}
+            · {favorites.size} favoritos
+          </p>
+        </div>
+        {isSupabaseConfigured && (
+          <UserMenu user={user} onSignInClick={() => openLogin()} onSignOutClick={handleSignOut} />
+        )}
       </header>
+
+      {visibleNotice && (
+        <div className="app__notice" role="alert">
+          <span>{visibleNotice}</span>
+          <button type="button" aria-label="Fechar aviso" onClick={dismissNotice}>
+            ×
+          </button>
+        </div>
+      )}
 
       <nav className="app__tabs" aria-label="Seções">
         <button type="button" className="app__tab" aria-pressed={view === 'pokemon'} onClick={() => setView('pokemon')}>
@@ -62,9 +101,12 @@ export default function App() {
         <button type="button" className="app__tab" aria-pressed={view === 'trainers'} onClick={() => setView('trainers')}>
           Treinadores
         </button>
+        <button type="button" className="app__tab" aria-pressed={view === 'favorites'} onClick={() => setView('favorites')}>
+          Favoritos
+        </button>
       </nav>
 
-      {view === 'pokemon' ? (
+      {view === 'pokemon' && (
         <>
           <section className="app__controls">
             <SearchBar value={search} onChange={setSearch} />
@@ -76,13 +118,41 @@ export default function App() {
               pokemons={filteredPokemons}
               favorites={favorites}
               onSelect={setSelectedPokemon}
-              onToggleFavorite={toggleFavorite}
+              onToggleFavorite={handleToggleFavorite}
             />
           </main>
         </>
-      ) : (
+      )}
+
+      {view === 'trainers' && (
         <main>
           <TrainerList trainers={trainers} pokemonsById={pokemonsById} onSelectPokemon={setSelectedPokemon} />
+        </main>
+      )}
+
+      {view === 'favorites' && (
+        <main>
+          {!user ? (
+            <div className="app__login-prompt" role="status">
+              <p className="app__login-prompt-title">Os seus favoritos ficam guardados na sua conta</p>
+              {isSupabaseConfigured ? (
+                <button type="button" className="user-menu__button user-menu__button--primary" onClick={() => openLogin()}>
+                  Entrar para ver os favoritos
+                </button>
+              ) : (
+                <p>Favoritos indisponíveis: o Supabase não está configurado neste projeto.</p>
+              )}
+            </div>
+          ) : (
+            <PokemonList
+              pokemons={favoritePokemons}
+              favorites={favorites}
+              onSelect={setSelectedPokemon}
+              onToggleFavorite={handleToggleFavorite}
+              emptyTitle="Ainda não tem favoritos"
+              emptyText="Clique na estrela de um Pokémon para o guardar aqui."
+            />
+          )}
         </main>
       )}
 
@@ -90,10 +160,12 @@ export default function App() {
         <PokemonDetails
           pokemon={selectedPokemon}
           isFavorite={favorites.has(selectedPokemon.id)}
-          onToggleFavorite={toggleFavorite}
+          onToggleFavorite={handleToggleFavorite}
           onClose={() => setSelectedPokemon(null)}
         />
       )}
+
+      {authMessage !== null && <AuthModal message={authMessage} onClose={() => setAuthMessage(null)} />}
     </div>
   );
 }

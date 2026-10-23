@@ -1,12 +1,19 @@
 import PokemonCard from './PokemonCard.jsx';
 import '../css/PokemonList.css';
 
-export default function PokemonList({ pokemons, favorites, onSelect, onToggleFavorite }) {
+export default function PokemonList({
+  pokemons,
+  favorites,
+  onSelect,
+  onToggleFavorite,
+  emptyTitle = 'Nenhum Pokémon encontrado',
+  emptyText = 'Tente ajustar a pesquisa ou os filtros.',
+}) {
   if (pokemons.length === 0) {
     return (
       <div className="pokemon-list__empty" role="status">
-        <p className="pokemon-list__empty-title">Nenhum Pokémon encontrado</p>
-        <p className="pokemon-list__empty-text">Tente ajustar a pesquisa ou os filtros.</p>
+        <p className="pokemon-list__empty-title">{emptyTitle}</p>
+        <p className="pokemon-list__empty-text">{emptyText}</p>
       </div>
     );
   }

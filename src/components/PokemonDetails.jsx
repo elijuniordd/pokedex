@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import StarIcon from './StarIcon.jsx';
+import useModal from '../hooks/useModal.js';
 import { FALLBACK_SRC, capitalize, formatId, getArtworkUrl, getStats, getTypes } from '../utils/pokemon.js';
 import '../css/PokemonDetails.css';
 
@@ -13,8 +14,6 @@ const STAT_LABELS = [
   ['specialDefense', 'Special Defense'],
   ['speed', 'Speed'],
 ];
-
-const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 const getStatLevel = (value) => (value < 50 ? 'low' : value < 90 ? 'medium' : 'high');
 
@@ -30,43 +29,10 @@ export default function PokemonDetails({ pokemon, isFavorite = false, onToggleFa
   const primaryType = types[0] ?? 'normal';
   const imageSrc = failedImageId === id ? FALLBACK_SRC : getArtworkUrl(id);
 
-  // Bloqueia o scroll da página, move o foco para o modal e devolve-o ao fechar
-  useEffect(() => {
-    const previouslyFocused = document.activeElement;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    closeButtonRef.current?.focus();
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      previouslyFocused?.focus?.();
-    };
-  }, []);
-
-  const handleKeyDown = (event) => {
-    if (event.key === 'Escape') {
-      onClose();
-      return;
-    }
-
-    // Mantém o Tab dentro do modal
-    if (event.key === 'Tab') {
-      const focusable = dialogRef.current.querySelectorAll(FOCUSABLE);
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-  };
+  useModal(dialogRef, closeButtonRef, onClose);
 
   return (
-    <div className="pokemon-details__overlay" onClick={onClose} onKeyDown={handleKeyDown}>
+    <div className="pokemon-details__overlay" onClick={onClose}>
       <div
         ref={dialogRef}
         className={`pokemon-details pokemon-card--${primaryType}`}
