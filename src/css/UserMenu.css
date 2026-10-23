@@ -47,3 +47,15 @@
     display: none;
   }
 }
+
+.user-menu__avatar {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
