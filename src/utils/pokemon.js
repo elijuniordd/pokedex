@@ -24,3 +24,10 @@ export const getTypes = (pokemon) => {
 
 // Aceita stats aninhados (pokemon.stats.hp) ou no primeiro nível (pokemon.hp)
 export const getStats = (pokemon) => pokemon.stats ?? pokemon;
+
+// "Lt. Surge" -> "lt-surge" (nome do ficheiro da foto em src/assets/images/trainers)
+export const slugify = (text) =>
+  text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');

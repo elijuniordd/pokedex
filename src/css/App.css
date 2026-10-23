@@ -23,3 +23,38 @@
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
+
+.app__tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.app__tab {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid #334155;
+  border-radius: 999px;
+  background: #1e293b;
+  color: #94a3b8;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.app__tab:hover {
+  color: #f8fafc;
+}
+
+.app__tab:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.app__tab[aria-pressed='true'] {
+  border-color: #60a5fa;
+  background: #60a5fa;
+  color: #0f172a;
+}

@@ -1,0 +1,141 @@
+.trainer-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.25rem;
+  border: 1px solid #334155;
+  border-radius: 1.25rem;
+  background: #1e293b;
+  color: #f8fafc;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.trainer-card:hover {
+  border-color: #60a5fa;
+  box-shadow: 0 0 24px -6px rgb(96 165 250 / 0.45);
+}
+
+.trainer-card__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.trainer-card__avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 4rem;
+  height: 4rem;
+  overflow: hidden;
+  border: 2px solid #60a5fa;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.trainer-card__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.trainer-card__name {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.trainer-card__badges-count {
+  margin: 0.15rem 0 0;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.trainer-card__badges {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.trainer-card__badge {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #475569;
+  border-radius: 50%;
+  background: #0f172a;
+}
+
+.trainer-card__badge--earned {
+  border-color: #facc15;
+  background: #facc15;
+  box-shadow: 0 0 8px rgb(250 204 21 / 0.5);
+}
+
+.trainer-card__subtitle {
+  margin: 0.25rem 0 0;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.trainer-card__team {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trainer-card__pokemon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  width: 100%;
+  padding: 0.4rem 0.2rem;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  background: #0f172a;
+  color: inherit;
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.trainer-card__pokemon:hover,
+.trainer-card__pokemon:focus-visible {
+  transform: translateY(-3px);
+  border-color: #60a5fa;
+  outline: none;
+}
+
+.trainer-card__pokemon img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trainer-card,
+  .trainer-card__pokemon {
+    transition: none;
+  }
+
+  .trainer-card__pokemon:hover,
+  .trainer-card__pokemon:focus-visible {
+    transform: none;
+  }
+}
+
+/* Os sprites de treinador são pixel art pequena: evita o desfoque ao ampliar */
+.trainer-card__avatar img {
+  image-rendering: pixelated;
+}
