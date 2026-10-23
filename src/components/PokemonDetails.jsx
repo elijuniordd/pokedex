@@ -1,21 +1,10 @@
 import { useRef, useState } from 'react';
 import StarIcon from './StarIcon.jsx';
+import StatBar from './StatBar.jsx';
+import StatRadar from './StatRadar.jsx';
 import useModal from '../hooks/useModal.js';
-import { FALLBACK_SRC, capitalize, formatId, getArtworkUrl, getStats, getTypes } from '../utils/pokemon.js';
+import { FALLBACK_SRC, STATS, capitalize, formatId, getArtworkUrl, getStats, getTypes } from '../utils/pokemon.js';
 import '../css/PokemonDetails.css';
-
-const MAX_STAT = 255; // maior valor base possível num atributo
-
-const STAT_LABELS = [
-  ['hp', 'HP'],
-  ['attack', 'Attack'],
-  ['defense', 'Defense'],
-  ['specialAttack', 'Special Attack'],
-  ['specialDefense', 'Special Defense'],
-  ['speed', 'Speed'],
-];
-
-const getStatLevel = (value) => (value < 50 ? 'low' : value < 90 ? 'medium' : 'high');
 
 export default function PokemonDetails({ pokemon, isFavorite = false, onToggleFavorite, onClose }) {
   const [failedImageId, setFailedImageId] = useState(null);
@@ -28,6 +17,7 @@ export default function PokemonDetails({ pokemon, isFavorite = false, onToggleFa
   const stats = getStats(pokemon);
   const primaryType = types[0] ?? 'normal';
   const imageSrc = failedImageId === id ? FALLBACK_SRC : getArtworkUrl(id);
+  const total = STATS.reduce((sum, { key }) => sum + (stats[key] ?? 0), 0);
 
   useModal(dialogRef, closeButtonRef, onClose);
 
@@ -90,30 +80,23 @@ export default function PokemonDetails({ pokemon, isFavorite = false, onToggleFa
             ))}
           </ul>
 
-          <ul className="pokemon-details__stats" aria-label="Atributos">
-            {STAT_LABELS.map(([key, label]) => {
-              const value = stats[key] ?? 0;
-              return (
-                <li key={key} className="pokemon-details__stat">
-                  <span className="pokemon-details__stat-label">{label}</span>
-                  <span className="pokemon-details__stat-value">{value}</span>
-                  <div
-                    className="pokemon-details__bar"
-                    role="progressbar"
-                    aria-label={label}
-                    aria-valuenow={value}
-                    aria-valuemin={0}
-                    aria-valuemax={MAX_STAT}
-                  >
-                    <div
-                      className={`pokemon-details__bar-fill pokemon-details__bar-fill--${getStatLevel(value)}`}
-                      style={{ width: `${Math.min(value / MAX_STAT, 1) * 100}%` }}
-                    />
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+          <section className="pokemon-details__stats-section" aria-labelledby="pokemon-details-stats">
+            <div className="pokemon-details__stats-header">
+              <h3 id="pokemon-details-stats">Atributos</h3>
+              <span className="pokemon-details__total">
+                Total <strong>{total}</strong>
+              </span>
+            </div>
+
+            <div className="pokemon-details__stats-body">
+              <ul className="pokemon-details__stats">
+                {STATS.map(({ key, label }) => (
+                  <StatBar key={key} label={label} value={stats[key] ?? 0} semantic />
+                ))}
+              </ul>
+              <StatRadar stats={stats} name={name} />
+            </div>
+          </section>
         </div>
       </div>
     </div>

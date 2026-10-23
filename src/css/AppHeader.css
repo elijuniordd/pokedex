@@ -1,0 +1,177 @@
+.app-header {
+  margin-bottom: 1.5rem;
+}
+
+.app-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.app-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.app-header__hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  overflow: hidden;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border: 1px solid #334155;
+  border-radius: 1.75rem;
+  background:
+    radial-gradient(circle at 85% 20%, rgb(239 68 68 / 0.22), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgb(59 130 246 / 0.2), transparent 50%),
+    #1e293b;
+}
+
+.app-header__eyebrow {
+  margin: 0 0 0.5rem;
+  color: #fca5a5;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.app-header__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.1rem + 2.8vw, 3rem);
+  line-height: 1.1;
+}
+
+.app-header__title span {
+  background: linear-gradient(90deg, #f87171, #fbbf24);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.app-header__text {
+  max-width: 46ch;
+  margin: 0.9rem 0 0;
+  color: #94a3b8;
+  line-height: 1.55;
+}
+
+.app-header__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0 0;
+}
+
+.app-header__stat {
+  display: flex;
+  flex-direction: column-reverse;
+  min-width: 6.5rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid #334155;
+  border-radius: 1rem;
+  background: rgb(15 23 42 / 0.55);
+}
+
+.app-header__stat dd {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.app-header__stat dt {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ---------- Vitrine decorativa (só em ecrãs largos) ---------- */
+
+.app-header__showcase {
+  position: relative;
+  min-height: 260px;
+}
+
+.app-header__ball {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(300px, 100%);
+  height: auto;
+  opacity: 0.12;
+  transform: translate(-50%, -50%) rotate(-12deg);
+}
+
+.app-header__starter {
+  position: absolute;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgb(0 0 0 / 0.5));
+  animation: starter-float 5s ease-in-out infinite;
+}
+
+.app-header__starter--1 {
+  top: 2%;
+  left: 4%;
+  width: 42%;
+}
+
+.app-header__starter--2 {
+  top: 6%;
+  right: 2%;
+  width: 40%;
+  animation-delay: -1.2s;
+}
+
+.app-header__starter--3 {
+  bottom: 0;
+  left: 8%;
+  width: 40%;
+  animation-delay: -2.4s;
+}
+
+.app-header__starter--4 {
+  right: 6%;
+  bottom: 2%;
+  width: 42%;
+  animation-delay: -3.6s;
+}
+
+@keyframes starter-float {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 860px) {
+  .app-header__hero {
+    grid-template-columns: 1fr;
+  }
+
+  .app-header__showcase {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header__stat {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-header__starter {
+    animation: none;
+  }
+}

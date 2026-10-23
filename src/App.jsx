@@ -6,7 +6,7 @@ import PokemonList from './components/PokemonList.jsx';
 import TrainerList from './components/TrainerList.jsx';
 import PokemonDetails from './components/PokemonDetails.jsx';
 import AuthModal from './components/AuthModal.jsx';
-import UserMenu from './components/UserMenu.jsx';
+import AppHeader from './components/AppHeader.jsx';
 import useAuth from './hooks/useAuth.js';
 import useFavorites from './hooks/useFavorites.js';
 import { isSupabaseConfigured } from './lib/supabase.js';
@@ -70,20 +70,17 @@ export default function App() {
 
   return (
     <div className="app">
-      <header className="app__header">
-        <div>
-          <h1 className="app__title">Pokédex</h1>
-          <p className="app__subtitle">
-            {view === 'trainers'
-              ? `${trainers.length} treinadores`
-              : `${view === 'pokemon' ? `${filteredPokemons.length} de ${pokemons.length} Pokémon` : `${pokemons.length} Pokémon`}`}{' '}
-            · {favorites.size} favoritos
-          </p>
-        </div>
-        {isSupabaseConfigured && (
-          <UserMenu user={user} onSignInClick={() => openLogin()} onSignOutClick={handleSignOut} />
-        )}
-      </header>
+      <AppHeader
+        stats={[
+          { label: 'Pokémon', value: pokemons.length },
+          { label: 'Treinadores', value: trainers.length },
+          { label: 'Favoritos', value: favorites.size },
+        ]}
+        showUserMenu={isSupabaseConfigured}
+        user={user}
+        onSignInClick={() => openLogin()}
+        onSignOutClick={handleSignOut}
+      />
 
       {visibleNotice && (
         <div className="app__notice" role="alert">
@@ -111,6 +108,9 @@ export default function App() {
           <section className="app__controls">
             <SearchBar value={search} onChange={setSearch} />
             <TypeFilter types={availableTypes} selectedType={selectedType} onChange={setSelectedType} />
+            <p className="app__results" aria-live="polite">
+              Mostrando <strong>{filteredPokemons.length}</strong> de {pokemons.length} Pokémon
+            </p>
           </section>
 
           <main>

@@ -1,17 +1,8 @@
 import { memo, useState } from 'react';
 import StarIcon from './StarIcon.jsx';
-import { FALLBACK_SRC, capitalize, formatId, getArtworkUrl, getStats, getTypes } from '../utils/pokemon.js';
+import StatBar from './StatBar.jsx';
+import { FALLBACK_SRC, STATS, capitalize, formatId, getArtworkUrl, getStats, getTypes } from '../utils/pokemon.js';
 import '../css/PokemonCard.css';
-
-// [chave em pokemon.stats, rótulo curto para caber no card, classe de cor]
-const CARD_STATS = [
-  ['hp', 'HP', 'hp'],
-  ['attack', 'Ataque', 'attack'],
-  ['defense', 'Defesa', 'defense'],
-  ['specialAttack', 'Atq. Esp.', 'special-attack'],
-  ['specialDefense', 'Def. Esp.', 'special-defense'],
-  ['speed', 'Veloc.', 'speed'],
-];
 
 function PokemonCard({ pokemon, onSelect, isFavorite = false, onToggleFavorite }) {
   // Guarda o id cuja imagem falhou: ao mudar de Pokémon a imagem volta a ser tentada
@@ -87,14 +78,11 @@ function PokemonCard({ pokemon, onSelect, isFavorite = false, onToggleFavorite }
         ))}
       </ul>
 
-      <dl className="pokemon-card__stats">
-        {CARD_STATS.map(([key, label, modifier]) => (
-          <div key={key} className={`pokemon-card__stat pokemon-card__stat--${modifier}`}>
-            <dt>{label}</dt>
-            <dd>{stats[key]}</dd>
-          </div>
+      <ul className="pokemon-card__stats" aria-label="Atributos">
+        {STATS.map(({ key, short }) => (
+          <StatBar key={key} label={short} value={stats[key] ?? 0} compact />
         ))}
-      </dl>
+      </ul>
     </article>
   );
 }

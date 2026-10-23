@@ -11,6 +11,9 @@ export default function UserMenu({ user, onSignInClick, onSignOutClick }) {
 
   return (
     <div className="user-menu">
+      <span className="user-menu__avatar" aria-hidden="true">
+        {user.email?.charAt(0).toUpperCase()}
+      </span>
       <span className="user-menu__email" title={user.email}>
         {user.email}
       </span>

@@ -31,3 +31,17 @@ export const slugify = (text) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+
+// Atributos exibidos: nome completo (modal), rótulo curto (card) e sigla (gráfico radar)
+export const STATS = [
+  { key: 'hp', label: 'HP', short: 'HP', abbr: 'HP' },
+  { key: 'attack', label: 'Ataque', short: 'Ataque', abbr: 'ATQ' },
+  { key: 'defense', label: 'Defesa', short: 'Defesa', abbr: 'DEF' },
+  { key: 'specialAttack', label: 'Ataque Especial', short: 'Atq. Esp.', abbr: 'A.ESP' },
+  { key: 'specialDefense', label: 'Defesa Especial', short: 'Def. Esp.', abbr: 'D.ESP' },
+  { key: 'speed', label: 'Velocidade', short: 'Veloc.', abbr: 'VEL' },
+];
+
+export const MAX_STAT = 255; // maior valor base possível num atributo
+
+export const getStatLevel = (value) => (value < 50 ? 'low' : value < 90 ? 'medium' : 'high');

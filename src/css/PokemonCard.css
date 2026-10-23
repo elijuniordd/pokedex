@@ -157,61 +157,16 @@
   text-transform: uppercase;
 }
 
-/* ---------- Mini-estatísticas ---------- */
+/* ---------- Mini-estatísticas (barras em StatBar.css) ---------- */
 
 .pokemon-card__stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem 0.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem 0.9rem;
   margin: 0.25rem 0 0;
-  padding-top: 0.75rem;
+  padding: 0.75rem 0 0;
   border-top: 1px solid var(--card-border);
-}
-
-.pokemon-card__stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.1rem;
-}
-
-.pokemon-card__stat dt {
-  font-size: 0.68rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--muted);
-}
-
-.pokemon-card__stat dd {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.pokemon-card__stat--hp dd {
-  color: #4ade80;
-}
-
-.pokemon-card__stat--attack dd {
-  color: #f87171;
-}
-
-.pokemon-card__stat--defense dd {
-  color: #60a5fa;
-}
-
-.pokemon-card__stat--special-attack dd {
-  color: #fb923c;
-}
-
-.pokemon-card__stat--special-defense dd {
-  color: #a78bfa;
-}
-
-.pokemon-card__stat--speed dd {
-  color: #facc15;
+  list-style: none;
 }
 
 /* ---------- Cores por tipo ---------- */
