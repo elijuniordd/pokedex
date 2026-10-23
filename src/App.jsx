@@ -3,6 +3,7 @@ import pokedexData from './data/pokedex-data.json';
 import SearchBar from './components/SearchBar.jsx';
 import TypeFilter from './components/TypeFilter.jsx';
 import PokemonList from './components/PokemonList.jsx';
+import PokemonDetails from './components/PokemonDetails.jsx';
 import './css/App.css';
 
 const pokemons = pokedexData.pokemon;
@@ -21,6 +22,7 @@ export default function App() {
   const [favorites, setFavorites] = useState(() => new Set());
   const [search, setSearch] = useState('');
   const [selectedType, setSelectedType] = useState('');
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
 
   const toggleFavorite = (id) => {
     setFavorites((prev) => {
@@ -55,9 +57,19 @@ export default function App() {
         <PokemonList
           pokemons={filteredPokemons}
           favorites={favorites}
+          onSelect={setSelectedPokemon}
           onToggleFavorite={toggleFavorite}
         />
       </main>
+
+      {selectedPokemon && (
+        <PokemonDetails
+          pokemon={selectedPokemon}
+          isFavorite={favorites.has(selectedPokemon.id)}
+          onToggleFavorite={toggleFavorite}
+          onClose={() => setSelectedPokemon(null)}
+        />
+      )}
     </div>
   );
 }
